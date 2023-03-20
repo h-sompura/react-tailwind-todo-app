@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsPlus } from "react-icons/bs";
 import Todo from "./components/Todo";
+import { db } from "./services/Firebase";
+import {
+  collection,
+  onSnapshot,
+  query,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 // adding tailwind styles
 const style = {
@@ -16,7 +26,48 @@ const style = {
 function App() {
   // Variables
   const [input, setInput] = useState("");
-  const [todos, setTodos] = useState(["Learn React", "Learn Tailwind"]);
+  const [todos, setTodos] = useState([]);
+  const taskCollectionRef = collection(db, "todos");
+
+  // CRUD - Create, Read, Update and Delete operations
+
+  // Create tasks/todos
+  const createTodo = async (e) => {
+    e.preventDefault(e);
+    if (input === "") {
+      alert("Please enter a valid todo");
+      return;
+    }
+    await addDoc(taskCollectionRef, {
+      text: input,
+      completed: false,
+    });
+    setInput("");
+  };
+
+  // Read tasks/todos
+  useEffect(() => {
+    const readQuery = query(collection(db, "todos"));
+    const unsubscribe = onSnapshot(readQuery, (querySnapshot) => {
+      let tasksArr = [];
+      querySnapshot.forEach((doc) => {
+        tasksArr.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(tasksArr);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Update tasks/todos
+  const toggleComplete = async (todo) => {
+    await updateDoc(doc(db, "todos", todo.id), {
+      completed: !todo.completed,
+    });
+  };
+  // Delete tasks/todos
+  const deleteTodo = async (id) => {
+    await deleteDoc(doc(db, "todos", id));
+  };
 
   return (
     // Background Container
@@ -25,7 +76,7 @@ function App() {
       <div className={style.container}>
         <h3 className={style.heading}>📝 To-do App</h3>
         {/* Form to input tasks/todos */}
-        <form className={style.form}>
+        <form onSubmit={createTodo} className={style.form}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -40,7 +91,12 @@ function App() {
         {/* Rendering tasks component */}
         <ul>
           {todos.map((todo, index) => (
-            <Todo key={index} todo={todo} />
+            <Todo
+              key={index}
+              todo={todo}
+              toggleComplete={toggleComplete}
+              deleteTodo={deleteTodo}
+            />
           ))}
         </ul>
 
