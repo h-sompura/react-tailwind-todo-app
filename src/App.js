@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsPlus } from "react-icons/bs";
 
 // adding tailwind styles
 const style = {
@@ -7,12 +8,14 @@ const style = {
   heading: `text-3xl font-bold text-center p-2 text-gray-800`,
   form: `flex justify-between`,
   input: `border p-2 my-2 w-full text-xl rounded-md italic focus:outline-indigo-400`,
-  button: `border p-2 rounded-md my-2 ml-2 bg-indigo-400 text-slate-100 text-xl cursor-pointer`,
+  button: `border p-2 rounded-md my-2 ml-2 bg-indigo-400 text-slate-100 text-xl cursor-pointer hover:bg-indigo-500`,
   count: `p-2 text-center`,
 };
 
-
 function App() {
+  // Variables
+  const [input, setInput] = useState("");
+
   return (
     // Background Container
     <div className={style.bg}>
@@ -22,12 +25,14 @@ function App() {
         {/* Form to input tasks/todos */}
         <form className={style.form}>
           <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className={style.input}
             type="text"
             placeholder="Enter your task"
           />
           <button className={style.button}>
-            Add
+            <BsPlus size={30} />
           </button>
         </form>
       </div>
