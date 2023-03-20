@@ -1,6 +1,21 @@
-# Getting Started with Create React App
+# 📝 Todo App - React + Tailwind CSS + Firebase
+
+React.js, Tailwind CSS based Todo App with CRUD functionality using 
+Firestore from Firebase. 
+
+Finished App: ⬇️
+
+![Finished App](./public/finished.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
+## [🪲 Tailwind CSS Documentation](https://tailwindcss.com/docs/installation) 
+
+
+### 👀 Note: This project requires firebase `env` file to run successfully. Create your own firebase project by going to the firebase console.
+
+## [🪐 Firebase Documentation](https://firebase.google.com/docs/firestore)
 
 ## Available Scripts
 
