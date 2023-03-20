@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BsPlus } from "react-icons/bs";
+import Todo from "./components/Todo";
 
 // adding tailwind styles
 const style = {
@@ -15,6 +16,7 @@ const style = {
 function App() {
   // Variables
   const [input, setInput] = useState("");
+  const [todos, setTodos] = useState(["Learn React", "Learn Tailwind"]);
 
   return (
     // Background Container
@@ -35,6 +37,17 @@ function App() {
             <BsPlus size={30} />
           </button>
         </form>
+        {/* Rendering tasks component */}
+        <ul>
+          {todos.map((todo, index) => (
+            <Todo key={index} todo={todo} />
+          ))}
+        </ul>
+
+        {/* Adding Tasks Count */}
+        {todos.length < 1 ? null : (
+          <p className={style.count}>{`You have ${todos.length} todos`}</p>
+        )}
       </div>
     </div>
   );
